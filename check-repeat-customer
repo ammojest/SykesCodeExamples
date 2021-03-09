@@ -1,0 +1,29 @@
+function has_bought($customer_email){
+
+  $orders = get_posts(array(
+  'numberposts' => -1,
+  'post_type' => 'shop_order',
+  'post_status' => 'wc-completed',
+  ));
+
+$email_array = array();
+
+foreach($orders as $order) {
+
+$order_obj = wc_get_order($order->ID);
+$order_obj_data = $order_obj->get_data();
+
+array_push($email_array, $order_obj_data['billing']['email']);
+
+}
+
+
+if (in_array($customer_email, $email_array)) {
+echo nl2br("\r\n Repeat Customer");
+} else {
+echo nl2br("\r\n New Customer");
+}
+
+}
+
+has_bought($email);
